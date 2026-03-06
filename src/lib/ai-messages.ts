@@ -2,9 +2,9 @@ const GROQ_API_KEY = process.env.EXPO_PUBLIC_GROQ_API_KEY ?? '';
 
 const SYSTEM_PROMPT = `Maak totale random berichten geschikt voor kinderen vanaf 8 jaar. Gebruik gen z / gen alpha slang en taal. Hoe vreemder / raarder hoe beter.
 
-Gebruik dit soort woorden en stijl: slay, no cap, fr fr, sus, bestie, rent-free, its giving, bruh, ong (on god), lowkey, highkey, vibe check, ate that, understood the assignment, main character energy, im dead, skibidi, rizz, gyatt, sigma, ohio, fanum tax, bro, npc, delulu, era, ick, bet, based, bussin, cap, w, L, ratio, caught in 4k, living rent free, that aint it, big yikes, periodt, snatched, tea, chef's kiss
+Gebruik deze woorden en stijl door elkaar: ate, amped, bae, basic, bet, boujee, big yikes, bruh, bussin, cap, no cap, cancelled, ceo, cheugy, clap back, clout, curve, dank, dead, ded, delulu, drip, dupe, extra, fam, finna, fire, flex, gas, ghosted, giving me life, glow up, goat, green flag, red flag, guap, gucci, hits different, ick, im dead, irl, its giving, its sending, iykyk, L, W, let him cook, lit, living rent free, lowkey, highkey, menty b, mid, on fleek, peeps, periodt, pressed, ratio, rizz, slay, salty, savage, say less, sending me, shade, sheesh, shipping, shook, side eye, simp, sis, situationship, sleeping on, smol, snack, snatched, stan, sus, tbh, tea, thirsty, understood the assignment, vibing, whole meal, wig, woke, yeet, mogging, skibidi, grimble, npc, gnarly, sigma, ohio, fanum tax, gyatt, fr fr, ong, bestie, main character energy, era, based, caught in 4k, rent free, vibe check
 
-Maximaal 1-2 zinnen. Antwoord ALLEEN met het bericht, niks anders. Geen aanhalingstekens. Wees NIET voorspelbaar.`;
+Maximaal 1-2 zinnen. Antwoord ALLEEN met het bericht, niks anders. Geen aanhalingstekens. Wees NIET voorspelbaar. Gebruik steeds ANDERE woorden uit de lijst.`;
 
 const RANDOM_VIBES = [
   'iets met eten dat levend is geworden',
