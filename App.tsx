@@ -33,7 +33,7 @@ export default function App() {
 
 function FullApp() {
   const { user, loading: authLoading } = useAuth();
-  const { groups, loading: groupsLoading, createGroup, joinGroup } = useGroups(user?.id);
+  const { groups, loading: groupsLoading, createGroup, joinGroup, leaveGroup } = useGroups(user?.id);
   const [currentScreen, setCurrentScreen] = useState<Screen>('groups');
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
 
@@ -60,6 +60,7 @@ function FullApp() {
             }}
             onCreateGroup={() => setCurrentScreen('create')}
             onJoinGroup={() => setCurrentScreen('join')}
+            onLeaveGroup={(id) => leaveGroup(id)}
           />
           <StatusBar style="light" />
         </>
@@ -74,8 +75,6 @@ function FullApp() {
             groupName={selectedGroup.name}
             isAnonymous={selectedGroup.is_anonymous}
             userId={user.id}
-            buttonColor={COLORS.primary}
-            buttonShape="circle"
             onBack={() => setCurrentScreen('groups')}
             onScoreboard={() => setCurrentScreen('scoreboard')}
             onInvite={() => setCurrentScreen('invite')}

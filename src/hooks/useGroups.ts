@@ -9,9 +9,24 @@ export function useGroups(userId: string | undefined) {
   const fetchGroups = useCallback(async () => {
     if (!userId) return;
     setLoading(true);
+
+    // Only fetch groups where user is a member
+    const { data: memberships, error: memError } = await supabase
+      .from('group_members')
+      .select('group_id')
+      .eq('user_id', userId);
+
+    if (memError || !memberships?.length) {
+      setGroups([]);
+      setLoading(false);
+      return;
+    }
+
+    const groupIds = memberships.map(m => m.group_id);
     const { data, error } = await supabase
       .from('groups')
       .select('*')
+      .in('id', groupIds)
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -64,17 +79,24 @@ export function useGroups(userId: string | undefined) {
   }
 
   async function joinGroup(inviteCode: string): Promise<boolean> {
-    if (!userId) return false;
+    if (!userId) {
+      console.error('Join failed: not logged in');
+      return false;
+    }
 
-    // Use SECURITY DEFINER function to find group (user isn't a member yet)
-    const { data, error: findError } = await supabase
-      .rpc('get_group_by_invite_code', { code: inviteCode });
+    // Find group by invite code
+    const { data: group, error: findError } = await supabase
+      .from('groups')
+      .select('id')
+      .eq('invite_code', inviteCode)
+      .single();
 
-    const groupId = data?.[0]?.id;
-    if (findError || !groupId) {
+    if (findError || !group) {
       console.error('Group not found:', findError?.message);
       return false;
     }
+
+    const groupId = group.id;
 
     const { error: joinError } = await supabase
       .from('group_members')
@@ -89,5 +111,23 @@ export function useGroups(userId: string | undefined) {
     return true;
   }
 
-  return { groups, loading, createGroup, joinGroup, refresh: fetchGroups };
+  async function leaveGroup(groupId: string): Promise<boolean> {
+    if (!userId) return false;
+
+    const { error } = await supabase
+      .from('group_members')
+      .delete()
+      .eq('group_id', groupId)
+      .eq('user_id', userId);
+
+    if (error) {
+      console.error('Leave group error:', error.message);
+      return false;
+    }
+
+    await fetchGroups();
+    return true;
+  }
+
+  return { groups, loading, createGroup, joinGroup, leaveGroup, refresh: fetchGroups };
 }

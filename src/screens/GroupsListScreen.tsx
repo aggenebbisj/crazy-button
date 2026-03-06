@@ -1,7 +1,9 @@
-import React from 'react';
-import { StyleSheet, View, FlatList, Text, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, FlatList, Text, Pressable, useWindowDimensions } from 'react-native';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 import { COLORS, BUBBLE_COLORS } from '../constants/theme';
+import { BackgroundPattern } from '../components/BackgroundPattern';
+import { useCustomization } from '../hooks/useCustomization';
 import { Group } from '../types';
 
 interface Props {
@@ -10,35 +12,60 @@ interface Props {
   onSelectGroup: (group: Group) => void;
   onCreateGroup: () => void;
   onJoinGroup: () => void;
+  onLeaveGroup: (groupId: string) => void;
 }
 
-export function GroupsListScreen({ groups, loading, onSelectGroup, onCreateGroup, onJoinGroup }: Props) {
+export function GroupsListScreen({ groups, loading, onSelectGroup, onCreateGroup, onJoinGroup, onLeaveGroup }: Props) {
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const c = useCustomization();
+  const { width, height } = useWindowDimensions();
+
   const renderGroup = ({ item, index }: { item: Group; index: number }) => {
     const color = BUBBLE_COLORS[index % BUBBLE_COLORS.length];
+    const isConfirming = confirmDelete === item.id;
+
     return (
       <Animated.View entering={FadeInRight.delay(index * 100).springify()}>
-        <Pressable
-          onPress={() => onSelectGroup(item)}
-          style={[styles.groupCard, { borderColor: color }]}
-        >
-          <View style={[styles.groupIcon, { backgroundColor: color }]}>
-            <Text style={styles.groupIconText}>
-              {item.name.charAt(0).toUpperCase()}
-            </Text>
+        {isConfirming ? (
+          <View style={[styles.groupCard, { borderColor: '#ff0055' }]}>
+            <Text style={styles.confirmText}>"{item.name}" verlaten?</Text>
+            <Pressable onPress={() => { onLeaveGroup(item.id); setConfirmDelete(null); }} style={styles.confirmYes}>
+              <Text style={styles.confirmYesText}>Ja</Text>
+            </Pressable>
+            <Pressable onPress={() => setConfirmDelete(null)} style={styles.confirmNo}>
+              <Text style={styles.confirmNoText}>Nee</Text>
+            </Pressable>
           </View>
-          <View style={styles.groupInfo}>
-            <Text style={styles.groupName}>{item.name}</Text>
-            <Text style={styles.groupMeta}>
-              {item.is_anonymous ? '🎭 Anoniem' : '👤 Met naam'}
-            </Text>
+        ) : (
+          <View style={[styles.groupCard, { borderColor: color }]}>
+            <Pressable
+              onPress={() => onSelectGroup(item)}
+              style={styles.groupCardInner}
+            >
+              <View style={[styles.groupIcon, { backgroundColor: color }]}>
+                <Text style={styles.groupIconText}>
+                  {item.name.charAt(0).toUpperCase()}
+                </Text>
+              </View>
+              <View style={styles.groupInfo}>
+                <Text style={styles.groupName}>{item.name}</Text>
+                <Text style={styles.groupMeta}>
+                  {item.is_anonymous ? '🎭 Anoniem' : '👤 Met naam'}
+                </Text>
+              </View>
+            </Pressable>
+            <Pressable onPress={() => setConfirmDelete(item.id)} style={styles.deleteButton}>
+              <Text style={styles.deleteText}>👋</Text>
+            </Pressable>
           </View>
-        </Pressable>
+        )}
       </Animated.View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: c.bgColor }]}>
+      <BackgroundPattern pattern={c.bgPattern} width={width} height={height} />
       <Text style={styles.title}>Crazy Button 🤪</Text>
 
       <FlatList
@@ -91,6 +118,35 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
+  groupCardInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  confirmText: {
+    color: COLORS.text,
+    fontSize: 15,
+    flex: 1,
+  },
+  confirmYes: {
+    backgroundColor: '#ff0055',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginLeft: 8,
+  },
+  confirmYesText: {
+    color: COLORS.text,
+    fontWeight: '600',
+  },
+  confirmNo: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginLeft: 4,
+  },
+  confirmNoText: {
+    color: COLORS.textSecondary,
+  },
   groupIcon: {
     width: 48,
     height: 48,
@@ -116,6 +172,12 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     fontSize: 13,
     marginTop: 2,
+  },
+  deleteButton: {
+    padding: 8,
+  },
+  deleteText: {
+    fontSize: 18,
   },
   emptyText: {
     color: COLORS.textSecondary,

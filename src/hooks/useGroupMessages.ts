@@ -1,6 +1,19 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { Platform } from 'react-native';
 import { supabase } from '../lib/supabase';
 import { Message } from '../types';
+
+function requestNotificationPermission() {
+  if (Platform.OS === 'web' && 'Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+function showNotification(title: string, body: string) {
+  if (Platform.OS === 'web' && 'Notification' in window && Notification.permission === 'granted') {
+    new Notification(title, { body, icon: '🤪' });
+  }
+}
 
 export function useGroupMessages(groupId: string | undefined, userId: string | undefined) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -57,6 +70,11 @@ export function useGroupMessages(groupId: string | undefined, userId: string | u
     fetchPressesRemaining();
   }, [fetchMessages, fetchPressesRemaining]);
 
+  // Request notification permission on mount
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
+
   // Realtime subscription
   useEffect(() => {
     if (!groupId) return;
@@ -68,7 +86,12 @@ export function useGroupMessages(groupId: string | undefined, userId: string | u
         schema: 'public',
         table: 'messages',
         filter: `group_id=eq.${groupId}`,
-      }, () => {
+      }, (payload: any) => {
+        // Show notification if it's from someone else
+        if (payload.new?.sender_id !== userId) {
+          const content = payload.new?.content ?? '🤪';
+          showNotification('Crazy Button 🤪', content);
+        }
         fetchMessages();
       })
       .subscribe();
@@ -76,7 +99,7 @@ export function useGroupMessages(groupId: string | undefined, userId: string | u
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [groupId, fetchMessages]);
+  }, [groupId, userId, fetchMessages]);
 
   async function sendPress(contentType: string, content: string): Promise<boolean> {
     if (!groupId || !userId) return false;

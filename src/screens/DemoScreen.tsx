@@ -30,6 +30,17 @@ const BUTTON_PATTERNS: { pattern: ButtonPattern; label: string }[] = [
   { pattern: 'flowers', label: 'Bloemetjes' },
 ];
 
+const BACKGROUNDS: { color: string; label: string }[] = [
+  { color: '#1a1a2e', label: '🌙 Nacht' },
+  { color: '#0d1b2a', label: '🌊 Oceaan' },
+  { color: '#2d1b69', label: '🔮 Paars' },
+  { color: '#1b2d1b', label: '🌲 Bos' },
+  { color: '#2b1b2d', label: '🌸 Roze' },
+  { color: '#1b1b1b', label: '🖤 Zwart' },
+  { color: '#0a2342', label: '💎 Saffier' },
+  { color: '#2d1f0e', label: '🍫 Choco' },
+];
+
 const BUTTON_EMOJIS = [
   '🤪', '😜', '🤩', '😎', '🥳',
   '👻', '🤖', '👽', '🦄', '🐱',
@@ -42,6 +53,7 @@ export function DemoScreen() {
   const [buttonColor, setButtonColor] = useState<string>(COLORS.primary);
   const [buttonShape, setButtonShape] = useState<ButtonShape>('circle');
   const [buttonPattern, setButtonPattern] = useState<ButtonPattern>('none');
+  const [bgColor, setBgColor] = useState<string>(COLORS.background);
   const [buttonEmoji, setButtonEmoji] = useState('🤪');
   const [showCustomizer, setShowCustomizer] = useState(false);
   const [flyingMessage, setFlyingMessage] = useState<string | null>(null);
@@ -96,7 +108,7 @@ export function DemoScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: bgColor }]}>
       <View style={styles.header}>
         <Text style={styles.title}>Crazy Button 🤪</Text>
         <Text style={styles.subtitle}>Demo modus — druk op de knop!</Text>
@@ -177,6 +189,23 @@ export function DemoScreen() {
                 ]}
               >
                 <Text style={styles.patternLabel}>{label}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+
+          <Text style={[styles.customizerTitle, { marginTop: 12 }]}>Kies je achtergrond:</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bgRow}>
+            {BACKGROUNDS.map(({ color, label }) => (
+              <Pressable
+                key={color}
+                onPress={() => setBgColor(color)}
+                style={[
+                  styles.bgOption,
+                  { backgroundColor: color },
+                  bgColor === color && styles.bgSelected,
+                ]}
+              >
+                <Text style={styles.bgLabel}>{label}</Text>
               </Pressable>
             ))}
           </ScrollView>
@@ -338,6 +367,24 @@ const styles = StyleSheet.create({
   patternLabel: {
     color: COLORS.text,
     fontSize: 13,
+  },
+  bgRow: {
+    flexDirection: 'row',
+  },
+  bgOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    marginRight: 8,
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  bgSelected: {
+    borderColor: COLORS.accent3,
+  },
+  bgLabel: {
+    color: COLORS.text,
+    fontSize: 12,
   },
   customizeToggle: {
     alignItems: 'center',
