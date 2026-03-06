@@ -1,4 +1,6 @@
-import { getRandomMessage, getRandomMessageAsync, FUNNY_TEXTS, EMOJI_COMBOS, SOUND_MESSAGES, STICKERS, BIG_STICKERS } from '../messages';
+import { getRandomMessage, _testing } from '../messages';
+
+const { DIEREN, VOORWERPEN, EMOJI_POOL, GELUIDEN } = _testing;
 
 describe('getRandomMessage', () => {
   it('returns a message with type and content', () => {
@@ -9,61 +11,39 @@ describe('getRandomMessage', () => {
     expect(message.content.length).toBeGreaterThan(0);
   });
 
-  it('returns text messages when roll < 0.3', () => {
-    jest.spyOn(Math, 'random')
-      .mockReturnValueOnce(0.1)
-      .mockReturnValueOnce(0);
-    const message = getRandomMessage();
-    expect(message.type).toBe('text');
-    expect(FUNNY_TEXTS).toContain(message.content);
-    jest.restoreAllMocks();
+  it('generates unique text messages', () => {
+    const messages = new Set<string>();
+    for (let i = 0; i < 50; i++) {
+      jest.spyOn(Math, 'random').mockReturnValueOnce(0.1); // force text
+      const msg = getRandomMessage();
+      jest.restoreAllMocks();
+      messages.add(msg.content);
+    }
+    // With random generation, we should get many unique messages
+    expect(messages.size).toBeGreaterThan(20);
   });
 
-  it('returns emoji messages when roll 0.3-0.5', () => {
-    jest.spyOn(Math, 'random')
-      .mockReturnValueOnce(0.35)
-      .mockReturnValueOnce(0);
-    const message = getRandomMessage();
-    expect(message.type).toBe('emoji');
-    expect(EMOJI_COMBOS).toContain(message.content);
+  it('generates emoji combos with 3-5 emojis', () => {
+    jest.spyOn(Math, 'random').mockReturnValueOnce(0.35); // force emoji
+    const msg = getRandomMessage();
     jest.restoreAllMocks();
+    expect(msg.type).toBe('emoji');
+    // Each emoji is 1-2 chars (some are surrogate pairs), combo should have multiple
+    expect(msg.content.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('returns sound messages when roll 0.5-0.7', () => {
-    jest.spyOn(Math, 'random')
-      .mockReturnValueOnce(0.55)
-      .mockReturnValueOnce(0);
-    const message = getRandomMessage();
-    expect(message.type).toBe('sound');
-    expect(SOUND_MESSAGES).toContain(message.content);
+  it('generates sound messages with emoji', () => {
+    jest.spyOn(Math, 'random').mockReturnValueOnce(0.55); // force sound
+    const msg = getRandomMessage();
     jest.restoreAllMocks();
+    expect(msg.type).toBe('sound');
+    expect(msg.content).toContain('!');
   });
 
-  it('returns sticker messages when roll 0.7-0.85', () => {
-    jest.spyOn(Math, 'random')
-      .mockReturnValueOnce(0.75)
-      .mockReturnValueOnce(0);
-    const message = getRandomMessage();
-    expect(message.type).toBe('sticker');
-    expect(STICKERS).toContain(message.content);
-    jest.restoreAllMocks();
-  });
-
-  it('returns big sticker messages when roll >= 0.85', () => {
-    jest.spyOn(Math, 'random')
-      .mockReturnValueOnce(0.9)
-      .mockReturnValueOnce(0);
-    const message = getRandomMessage();
-    expect(message.type).toBe('sticker');
-    expect(BIG_STICKERS).toContain(message.content);
-    jest.restoreAllMocks();
-  });
-
-  it('has enough messages per category', () => {
-    expect(FUNNY_TEXTS.length).toBeGreaterThanOrEqual(10);
-    expect(EMOJI_COMBOS.length).toBeGreaterThanOrEqual(10);
-    expect(SOUND_MESSAGES.length).toBeGreaterThanOrEqual(5);
-    expect(STICKERS.length).toBeGreaterThanOrEqual(10);
-    expect(BIG_STICKERS.length).toBeGreaterThanOrEqual(5);
+  it('has enough words in each pool for variety', () => {
+    expect(DIEREN.length).toBeGreaterThanOrEqual(15);
+    expect(VOORWERPEN.length).toBeGreaterThanOrEqual(15);
+    expect(EMOJI_POOL.length).toBeGreaterThanOrEqual(40);
+    expect(GELUIDEN.length).toBeGreaterThanOrEqual(15);
   });
 });

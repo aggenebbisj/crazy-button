@@ -1,85 +1,116 @@
-export const FUNNY_TEXTS = [
-  'Ik heb net een eenhoorn gezien op de fiets 🦄🚲',
-  'Mijn kat heeft mijn huiswerk opgegeten... ik heb geen kat 🐱',
-  'ALARM! Er zit een banaan in mijn oor! 🍌👂',
-  'Ik ben vergeten hoe je knippert 👀',
-  'Er staat een pinguïn voor de deur. Wat moet ik doen? 🐧',
-  'Help! Mijn schoenen zijn te blij! 👟😊',
-  'De koelkast praat weer tegen me 🗣️❄️',
-  'Ik heb per ongeluk de maan gebeld 🌙📞',
-  'Mijn brood is op vakantie 🍞🏖️',
-  'SOS! De soep is ontsnapt! 🍜🏃',
-  'Waarom is de lucht niet groen? 🤔💚',
-  'Mijn sokken zijn het niet eens met elkaar 🧦😤',
-  'Er zit een wolk in mijn rugzak ☁️🎒',
-  'De tafel heeft weer hoofdpijn 🤕',
-  'Ik heb het internet kapot gemaakt 💻💥',
-  'Hoeveel pannenkoeken passen in een vliegtuig? 🥞✈️',
-  'Mijn haar heeft vakantie nodig 💇',
-  'De deur wil niet meer meedoen 🚪😤',
-  'Ik spreek vloeiend wafel 🧇',
-  'Er zit een regenboog in mijn zak 🌈👖',
+// === Random word pools ===
+
+const DIEREN = [
+  'eenhoorn', 'pinguïn', 'flamingo', 'octopus', 'luiaard',
+  'capybara', 'axolotl', 'narwal', 'quokka', 'kameleon',
+  'papegaai', 'zeehond', 'koala', 'wasbeer', 'alpaca',
+  'hamster', 'stinkdier', 'kwal', 'otter', 'vleermuis',
 ];
 
-export const EMOJI_COMBOS = [
-  '🐔💨🌈',
-  '🦊🎸🔥',
-  '🐙🎩✨',
-  '🦀💃🌮',
-  '🐸🎺🌙',
-  '🦄🍕🚀',
-  '🐧❄️🎪',
-  '🦊🧁🎭',
-  '🐻🎨🌪️',
-  '🐝🎹🌸',
-  '🦁👑🎯',
-  '🐨🍩🎠',
-  '🦋🎪🌊',
-  '🐢🏎️💨',
-  '🦊🧲⚡',
+const VOORWERPEN = [
+  'pannenkoek', 'raket', 'banaan', 'paraplu', 'skateboard',
+  'tuba', 'discoballen', 'lava-lamp', 'trampoline', 'sombrero',
+  'boterham', 'rugzak', 'telescoop', 'sneeuwbal', 'ballon',
+  'donut', 'piñata', 'vliegtuig', 'gieter', 'kaasblok',
 ];
 
-export const SOUND_MESSAGES = [
-  'BOEM! 💥',
-  'TOET TOET! 📯',
-  'SPLASHHH! 🌊',
-  'WHOOOOSH! 💨',
-  'BOING BOING! 🏀',
-  'KABLAMMO! 🎆',
-  'PRRRRT! 💨',
-  'KLING KLANG! 🔔',
-  'ZOOOOOM! 🚀',
-  'PLOP! 🫧',
+const PLEKKEN = [
+  'op het dak', 'in de koelkast', 'op de maan', 'in de wasmachine',
+  'achter de bank', 'in een vulkaan', 'op een wolk', 'in de jungle',
+  'onder water', 'op Mars', 'in een lift', 'op een regenboog',
+  'in de magnetron', 'op een skatebaan', 'in een iglo', 'op een berg',
 ];
 
-export const STICKERS = [
-  '🦄', '👻', '🤡', '🐸', '🦊',
-  '🐙', '🦀', '🐧', '🦋', '🐝',
-  '🍕', '🌮', '🍩', '🧁', '🍦',
-  '🚀', '🎸', '🎪', '🎠', '🌈',
+const ACTIES = [
+  'danst de macarena', 'zingt opera', 'eet spaghetti', 'speelt gitaar',
+  'doet een handstand', 'bouwt een fort', 'leert vliegen', 'bakt taarten',
+  'breakdanced', 'jongleert', 'doet yoga', 'speelt verstoppertje',
+  'maakt selfies', 'surft', 'racet', 'beatboxt',
+  'doet alsof ie een robot is', 'springt op een trampoline',
 ];
 
-export const BIG_STICKERS = [
-  '🐱😴💤',
-  '🐶❤️🦴',
-  '🐧🎶💃',
-  '🦊🌟✨',
-  '🐸☕😌',
-  '🐹🎉🥳',
-  '🦁👑💪',
-  '🐰🥕😋',
-  '🐻🍯🤤',
-  '🦄🌈💖',
+const BIJVOEGLIJK = [
+  'onzichtbare', 'dansende', 'vliegende', 'glitterende', 'exploderende',
+  'gigantische', 'piepkleine', 'boze', 'slapende', 'zingende',
+  'turbo', 'magische', 'radioactieve', 'knuffelige', 'verdachte',
+  'geheime', 'neon', 'draaiende', 'brullende', 'misselijke',
 ];
 
-export interface RandomMessage {
-  type: 'text' | 'emoji' | 'sound' | 'sticker' | 'gif';
-  content: string;
-}
+const EMOJI_POOL = [
+  '🦄', '🐧', '🦊', '🐙', '🐸', '🦁', '🐻', '🐨', '🦋', '🐝',
+  '🍕', '🌮', '🍩', '🧁', '🍦', '🍌', '🥕', '🍫', '🎂', '🥞',
+  '🚀', '🎸', '🎪', '🎠', '🌈', '💎', '🔮', '⚡', '🌊', '🔥',
+  '👻', '🤖', '👽', '💀', '🤡', '🎭', '👑', '🧲', '🎯', '🎨',
+  '💥', '✨', '🌟', '💫', '🫧', '🎆', '🎇', '💖', '🦴', '🧊',
+  '🛸', '🏝️', '🌋', '🎩', '🪄', '🧸', '🎪', '🎵', '🎺', '🥁',
+];
 
-function pickRandom<T>(arr: T[]): T {
+const GELUIDEN = [
+  'BOEM', 'KABLAM', 'WHOOSH', 'SPLASH', 'BOING',
+  'KABLAMMO', 'PRRRRT', 'ZOOOM', 'PLOP', 'KRAKK',
+  'WAPPERDEFLAP', 'SWOOSH', 'PLING', 'BONK', 'FLOEP',
+  'RATATATAT', 'TJINGELING', 'KADOINK', 'PATS', 'WHAM',
+];
+
+const GELUID_EMOJI = [
+  '💥', '🌊', '💨', '🏀', '🎆', '🔔', '🚀', '🫧', '⚡', '🌪️',
+  '💣', '🎵', '🔊', '🎺', '🥁', '🎸', '📯', '🎉', '🧨', '💫',
+];
+
+// === Random helpers ===
+
+function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+
+function pickN<T>(arr: T[], n: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, n);
+}
+
+// === Generators ===
+
+function generateFunnyText(): string {
+  const templates = [
+    () => `Mijn ${pick(BIJVOEGLIJK)} ${pick(DIEREN)} ${pick(ACTIES)} ${pick(PLEKKEN)}`,
+    () => `Er zit een ${pick(BIJVOEGLIJK)} ${pick(VOORWERPEN)} ${pick(PLEKKEN)}`,
+    () => `HELP! Mijn ${pick(VOORWERPEN)} ${pick(ACTIES)}!`,
+    () => `Ik heb per ongeluk een ${pick(BIJVOEGLIJK)} ${pick(DIEREN)} besteld`,
+    () => `Wist je dat een ${pick(DIEREN)} kan ${pick(ACTIES).replace('doet ', '').replace('speelt ', '').replace('bakt ', 'bakken').replace('leert ', 'leren').replace('maakt ', 'maken')}?`,
+    () => `De ${pick(DIEREN)} en de ${pick(DIEREN)} ${pick(ACTIES).replace('doet', 'doen').replace('speelt', 'spelen')} ${pick(PLEKKEN)}`,
+    () => `Ik zoek mijn ${pick(BIJVOEGLIJK)} ${pick(VOORWERPEN)}. Heeft iemand die gezien?`,
+    () => `Breaking news: ${pick(BIJVOEGLIJK)} ${pick(DIEREN)} gevonden ${pick(PLEKKEN)} met een ${pick(VOORWERPEN)}`,
+    () => `Als je een ${pick(DIEREN)} was, zou je ook ${pick(ACTIES).replace('doet ', '').replace('speelt ', '')} ${pick(PLEKKEN)}`,
+    () => `Mijn ${pick(VOORWERPEN)} is verliefd op een ${pick(VOORWERPEN)}`,
+    () => `Vandaag leerde ik dat ${pick(DIEREN)}en ${pick(BIJVOEGLIJK)}e ${pick(VOORWERPEN)}en eten`,
+    () => `Waarschuwing: ${pick(BIJVOEGLIJK)} ${pick(VOORWERPEN)} gespot ${pick(PLEKKEN)}!`,
+  ];
+  return pick(templates)();
+}
+
+function generateEmojiCombo(): string {
+  const count = 3 + Math.floor(Math.random() * 3); // 3-5 emojis
+  return pickN(EMOJI_POOL, count).join('');
+}
+
+function generateSound(): string {
+  const sound = pick(GELUIDEN);
+  const emoji = pick(GELUID_EMOJI);
+  const repeats = Math.random() > 0.5 ? '!!' : '!';
+  const extra = Math.random() > 0.6 ? ' ' + pick(GELUID_EMOJI) : '';
+  return `${sound}${repeats} ${emoji}${extra}`;
+}
+
+function generateSticker(): string {
+  if (Math.random() > 0.5) {
+    // Single big emoji
+    return pick(EMOJI_POOL);
+  }
+  // Emoji combo sticker (2-3)
+  return pickN(EMOJI_POOL, 2 + Math.floor(Math.random() * 2)).join('');
+}
+
+// === GIF fetcher ===
 
 async function fetchGifUrl(): Promise<string | null> {
   try {
@@ -87,38 +118,42 @@ async function fetchGifUrl(): Promise<string | null> {
     const data = await res.json();
     if (data?.[0]?.url) return data[0].url;
   } catch { /* ignore */ }
-
   return null;
+}
+
+// === Public API ===
+
+export interface RandomMessage {
+  type: 'text' | 'emoji' | 'sound' | 'sticker' | 'gif';
+  content: string;
 }
 
 export async function getRandomMessageAsync(): Promise<RandomMessage> {
   const roll = Math.random();
 
-  if (roll < 0.25) {
-    return { type: 'text', content: pickRandom(FUNNY_TEXTS) };
-  } else if (roll < 0.40) {
-    return { type: 'emoji', content: pickRandom(EMOJI_COMBOS) };
-  } else if (roll < 0.55) {
-    return { type: 'sound', content: pickRandom(SOUND_MESSAGES) };
-  } else if (roll < 0.70) {
-    return { type: 'sticker', content: pickRandom(STICKERS) };
+  if (roll < 0.30) {
+    return { type: 'text', content: generateFunnyText() };
+  } else if (roll < 0.45) {
+    return { type: 'emoji', content: generateEmojiCombo() };
+  } else if (roll < 0.60) {
+    return { type: 'sound', content: generateSound() };
   } else if (roll < 0.80) {
-    return { type: 'sticker', content: pickRandom(BIG_STICKERS) };
+    return { type: 'sticker', content: generateSticker() };
   } else {
-    // GIF - fetch a real one
     const url = await fetchGifUrl();
     if (url) return { type: 'gif', content: url };
-    // Fallback to sticker
-    return { type: 'sticker', content: pickRandom(BIG_STICKERS) };
+    return { type: 'sticker', content: generateSticker() };
   }
 }
 
-// Sync version for tests (no gif)
+// Sync version (no gif, for tests)
 export function getRandomMessage(): RandomMessage {
   const roll = Math.random();
-  if (roll < 0.3) return { type: 'text', content: pickRandom(FUNNY_TEXTS) };
-  if (roll < 0.5) return { type: 'emoji', content: pickRandom(EMOJI_COMBOS) };
-  if (roll < 0.7) return { type: 'sound', content: pickRandom(SOUND_MESSAGES) };
-  if (roll < 0.85) return { type: 'sticker', content: pickRandom(STICKERS) };
-  return { type: 'sticker', content: pickRandom(BIG_STICKERS) };
+  if (roll < 0.3) return { type: 'text', content: generateFunnyText() };
+  if (roll < 0.5) return { type: 'emoji', content: generateEmojiCombo() };
+  if (roll < 0.7) return { type: 'sound', content: generateSound() };
+  return { type: 'sticker', content: generateSticker() };
 }
+
+// Exports for tests
+export const _testing = { DIEREN, VOORWERPEN, PLEKKEN, ACTIES, BIJVOEGLIJK, EMOJI_POOL, GELUIDEN };
