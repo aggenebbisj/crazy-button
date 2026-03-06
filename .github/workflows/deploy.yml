@@ -28,6 +28,7 @@ jobs:
         env:
           EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
           EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
+          EXPO_PUBLIC_GROQ_API_KEY: ${{ secrets.EXPO_PUBLIC_GROQ_API_KEY }}
 
       - name: Fix paths for GitHub Pages
         run: |

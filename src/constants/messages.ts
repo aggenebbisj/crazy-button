@@ -123,6 +123,8 @@ async function fetchGifUrl(): Promise<string | null> {
 
 // === Public API ===
 
+import { generateAIMessage } from '../lib/ai-messages';
+
 export interface RandomMessage {
   type: 'text' | 'emoji' | 'sound' | 'sticker' | 'gif';
   content: string;
@@ -131,13 +133,16 @@ export interface RandomMessage {
 export async function getRandomMessageAsync(): Promise<RandomMessage> {
   const roll = Math.random();
 
-  if (roll < 0.30) {
+  if (roll < 0.40) {
+    // 40% kans: AI-gegenereerd bericht (met fallback naar proceduraal)
+    const aiMessage = await generateAIMessage();
+    if (aiMessage) return { type: 'text', content: aiMessage };
     return { type: 'text', content: generateFunnyText() };
-  } else if (roll < 0.45) {
+  } else if (roll < 0.55) {
     return { type: 'emoji', content: generateEmojiCombo() };
-  } else if (roll < 0.60) {
+  } else if (roll < 0.65) {
     return { type: 'sound', content: generateSound() };
-  } else if (roll < 0.80) {
+  } else if (roll < 0.85) {
     return { type: 'sticker', content: generateSticker() };
   } else {
     const url = await fetchGifUrl();
